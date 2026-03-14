@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 
 export default function WebcamCapture() {
@@ -8,6 +7,7 @@ export default function WebcamCapture() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number>(5);
 
+  // Start webcam
   useEffect(() => {
     const startWebcam = async () => {
       try {
@@ -15,8 +15,6 @@ export default function WebcamCapture() {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-        const interval = setInterval(capturePhoto, 5000);
-        return () => clearInterval(interval);
       } catch (error) {
         console.error(error);
       }
@@ -24,6 +22,7 @@ export default function WebcamCapture() {
     startWebcam();
   }, []);
 
+  // Countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
@@ -42,35 +41,53 @@ export default function WebcamCapture() {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
+
+    canvas.width = video.videoWidth || 320;
+    canvas.height = video.videoHeight || 240;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const dataUrl = canvas.toDataURL("image/png");
     setPhoto(dataUrl);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="rounded-xl overflow-hidden border-2 border-neutral-700 shadow-lg bg-black">
+    <div className="flex flex-col lg:flex-row lg:gap-4 items-center justify-center">
+      {/* Video container */}
+      <div className="relative w-[320px] h-[240px] rounded-xl overflow-hidden border-2 border-neutral-700 shadow-lg bg-black">
         <video
           ref={videoRef}
           autoPlay
-          className="w-[320px] h-[240px] object-cover bg-black"
+          className="w-full h-full object-cover bg-black"
         />
+        {/* Countdown overlay */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="text-white text-6xl font-bold drop-shadow-lg">
+            {countdown}
+          </span>
+        </div>
       </div>
+
+      {/* Hidden canvas for capture */}
       <canvas
         ref={canvasRef}
         width={320}
         height={240}
         style={{ display: "none" }}
       />
-      {photo && (
-        <img
-          src={photo}
-          alt="Latest photo"
-          className="mt-4 w-[160px] h-[120px] rounded border border-neutral-700 shadow"
-        />
-      )}
+
+      {/* Latest photo */}
+      <div className="lg:mt-0 mt-4 w-[320px] h-[240px] rounded-xl overflow-hidden border-2 border-neutral-700 shadow-lg bg-black">
+        {photo && (
+          <img
+            src={photo}
+            alt="Latest photo"
+            className="w-full h-full object-cover bg-black"
+          />
+        )}
+      </div>
     </div>
   );
 }
