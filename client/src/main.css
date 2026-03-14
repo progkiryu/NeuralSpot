@@ -1,1 +1,25 @@
 @import 'tailwindcss';
+
+html, body, #root {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #18181b;
+	color-scheme: dark;
+	overflow: hidden;
+}
+
+body {
+	font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+	background: #18181b;
+}
+
+/* Fade-in animation for facts */
+.animate-fade-in {
+	opacity: 0;
+	animation: fadeIn 1s forwards;
+}
+@keyframes fadeIn {
+	to { opacity: 1; }
+}

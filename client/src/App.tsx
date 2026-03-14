@@ -1,96 +1,69 @@
-import { useRef, useState } from 'react'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import LinkedCameraIcon from '@mui/icons-material/LinkedCamera';
+
+import { useRef, useState } from 'react';
 import WebcamCapture from './WebcamCapture';
 
+const STROKE_FACTS = [
+  "Sudden numbness or weakness in the face, arm, or leg, especially on one side of the body.",
+  "Sudden confusion, trouble speaking, or understanding speech.",
+  "Sudden trouble seeing in one or both eyes.",
+  "Sudden trouble walking, dizziness, loss of balance or coordination.",
+  "Sudden severe headache with no known cause."
+];
 
 function App() {
-
-  const [summary, SetSummary] = useState<string | null>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const openFileDialog = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log(file);
-    }
-  };
+  // Minimal state for demo
+  const [summary, setSummary] = useState<string | null>(null);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center gap-10 px-5 py-2
-    bg-gradient-to-r from-violet-600 via-blue-500 to-cyan-400">
-      <h1 className="text-4xl font-bold text-white text-center">Detect stokes. Make split-decisions.</h1>
-      
-      <WebcamCapture />
-
-      <section className="w-full max-w-4xl gap-10 flex flex-col items-center justify-center">
-        <div className="w-full flex items-center justify-center gap-5">
-          <button title="Take a photo"
-          className="rounded-full p-2 flex items-center justify-center h-[80px] w-[80px] bg-white cursor-pointer
-          shadow-xl shadow-black/50
-          hover:bg-black duration-200 transition"
-          onMouseEnter={() => setHovered('add-photo')} onMouseLeave={() => setHovered(null)}>
-            <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
-              <AddPhotoAlternateIcon
-              fontSize="large" 
-              className={`duration-200 ${hovered === 'add-photo' ? 'text-pink-500 scale-115' : 'text-black'} !transition`} />
-            </span>
-          </button>
-          <button title="Upload from Library" 
-          className="rounded-full p-2 flex items-center justify-center h-[80px] w-[80px] bg-white cursor-pointer
-          shadow-lg shadow-black/50
-          hover:bg-black duration-200 transition"
-          onClick={() => openFileDialog()}
-          onMouseEnter={() => setHovered('photo-library')} onMouseLeave={() => setHovered(null)}>
-            <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
-              <PhotoLibraryIcon
-               fontSize="large"
-               className={`duration-200 ${hovered === 'photo-library' ? 'text-pink-500 scale-115' : 'text-black'} !transition`} />
-            </span>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-              accept="image/*"
-            />
-          </button>
-          <button title="Automatic Screenshots" 
-          className="rounded-full p-2 flex items-center justify-center h-[80px] w-[80px] bg-white cursor-pointer
-          shadow-lg shadow-black/50
-          hover:bg-black duration-200 transition"
-          onMouseEnter={() => setHovered('linked-camera')} onMouseLeave={() => setHovered(null)}>
-            <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
-              <LinkedCameraIcon
-                fontSize="large"
-                className={`duration-200 ${hovered === 'linked-camera' ? 'text-pink-500 scale-115' : 'text-black'} !transition`}
-              />
-            </span>
-          </button>
+    <div className="w-screen h-screen bg-neutral-900 flex flex-col items-center justify-center overflow-hidden select-none">
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight text-center drop-shadow-lg">
+        Detect strokes. Make split-decisions.
+      </h1>
+      <div className="relative flex items-center justify-center w-full max-w-6xl h-[60vh] px-2">
+        {/* Stroke facts as bullet points with dividers - left */}
+        <ul className="absolute left-0 top-1/2 -translate-y-1/2 w-72 max-w-xs text-right pr-6 hidden md:flex flex-col items-end gap-0.5">
+          {STROKE_FACTS.slice(0,3).map((fact, idx) => (
+            <li key={idx} className="w-full">
+              <div className="flex items-center gap-2 w-full">
+                <span className="inline-block w-2 h-2 rounded-full bg-gray-500/60 mr-2"></span>
+                <span className="text-sm text-gray-300 font-medium animate-fade-in" style={{animationDelay: `${0.1 + idx * 0.1}s`}}>{fact}</span>
+              </div>
+              {idx < 2 && <div className="w-5/6 ml-auto border-t border-gray-600/30 my-2" />}
+            </li>
+          ))}
+        </ul>
+        {/* Stroke facts as bullet points with dividers - right */}
+        <ul className="absolute right-0 top-1/2 -translate-y-1/2 w-72 max-w-xs text-left pl-6 hidden md:flex flex-col items-start gap-0.5">
+          {STROKE_FACTS.slice(3).map((fact, idx) => (
+            <li key={idx} className="w-full">
+              <div className="flex items-center gap-2 w-full">
+                <span className="inline-block w-2 h-2 rounded-full bg-gray-500/60 mr-2"></span>
+                <span className="text-sm text-gray-300 font-medium animate-fade-in" style={{animationDelay: `${0.4 + idx * 0.1}s`}}>{fact}</span>
+              </div>
+              {idx < STROKE_FACTS.slice(3).length - 1 && <div className="w-5/6 border-t border-gray-600/30 my-2" />}
+            </li>
+          ))}
+        </ul>
+        {/* Camera section */}
+        <div className="z-10 bg-neutral-800 rounded-2xl shadow-2xl p-4 flex flex-col items-center justify-center border border-neutral-700">
+          <WebcamCapture />
         </div>
-
+      </div>
+      {/* Summary or prompt */}
+      <div className="mt-6">
         {summary ? (
-          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg mt-10">
-            <h1>Summary:</h1>
-            <p className="text-lg font-semibold text-gray-800">{summary}</p>
+          <div className="bg-neutral-800/80 backdrop-blur p-4 rounded-lg shadow-lg">
+            <h2 className="text-lg font-semibold text-pink-200 mb-2">Summary:</h2>
+            <p className="text-base font-medium text-gray-200">{summary}</p>
           </div>
-        ) : <h1 className="text-xl font-semibold italic underline 
-          bg-gradient-to-r from-orange-500 to-pink-500 
-          bg-clip-text text-transparent 
-          drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)] 
-          tracking-wide">
+        ) : (
+          <p className="text-base text-gray-400 italic text-center">
             Add a photo to see results!
-          </h1>}
-      </section>
+          </p>
+        )}
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
