@@ -8,7 +8,7 @@ exports.appConfig = async (app) => {
   app.use(helmet())
   app.use(cookieParser());
   app.use(express.json());
-  app.use('/api/scan', scanRoutes); 
+  app.use('/api/v1/scan', scanRoutes); 
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);
   })
