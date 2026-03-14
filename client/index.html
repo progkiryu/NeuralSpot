@@ -7,16 +7,40 @@
 </head>
 
 <body>
-    <video id="webcamVideo" autoplay></video>
+
+    <video id="webcamVideo" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="photo" alt="Captured photo will appear here">
 
     <script>
         const webcamVideo = document.getElementById("webcamVideo");
+        const canvas = document.getElementById("canvas");
+        const photo = document.getElementById("photo");
 
-        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-            webcamVideo.srcObject = stream;
-        }).cattch((error) => {
-            console.error(error);
-        })
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                webcamVideo.srcObject = stream;
+            } catch (error) {
+                console.error(error);
+                alert("Error accessing the camera: " + error.message);
+            }
+        }
+
+        function takePhoto() {
+            if (webcamVideo.videoWidth === 0 || webcamVideo.videoHeight === 0) return;
+            canvas.width = webcamVideo.videoWidth;
+            canvas.height = webcamVideo.videoHeight;
+            canvas.getContext('2d').drawImage(webcamVideo, 0, 0, canvas.width, canvas.height);
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+            photo.src = imageDataUrl;
+        }
+
+        // Take a photo every 3 seconds
+        setInterval(takePhoto, 1000);
+
+        // Start the camera when the page loads
+        window.addEventListener('load', startCamera);
     </script>
 </body>
 
