@@ -1,38 +1,13 @@
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test to access webcam</title>
-</head>
-
-<body>
-
-    <video id="webcamVideo" autoplay style="width:320px; height:240px;"></video>
-    <canvas id="captureCanvas" width="320" height="240" style="display:none;"></canvas>
-    <img id="photoPreview" alt="Latest photo"
-        style="display:block; margin-top:10px; width:320px; height:240px; border:1px solid #ccc;" />
-
-    <script>
-        const webcamVideo = document.getElementById("webcamVideo");
-        const captureCanvas = document.getElementById("captureCanvas");
-        const photoPreview = document.getElementById("photoPreview");
-        const ctx = captureCanvas.getContext("2d");
-
-        function capturePhoto() {
-            ctx.drawImage(webcamVideo, 0, 0, captureCanvas.width, captureCanvas.height);
-            const dataUrl = captureCanvas.toDataURL("image/png");
-            photoPreview.src = dataUrl;
-        }
-
-        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-            webcamVideo.srcObject = stream;
-            // Start capturing every 2 seconds
-            setInterval(capturePhoto, 2000);
-        }).catch((error) => {
-            console.error(error);
-        });
-    </script>
-</body>
-
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Stroke Detector</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
