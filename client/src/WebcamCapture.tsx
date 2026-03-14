@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+
 export default function WebcamCapture() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -77,6 +79,8 @@ export default function WebcamCapture() {
         height={240}
         style={{ display: "none" }}
       />
+
+      <CompareArrowsIcon className="text-white text-4xl" />
 
       {/* Latest photo */}
       <div className="lg:mt-0 mt-4 w-[320px] h-[240px] rounded-xl overflow-hidden border-2 border-neutral-700 shadow-lg bg-black">

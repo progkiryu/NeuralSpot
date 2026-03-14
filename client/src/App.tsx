@@ -19,7 +19,7 @@ const STROKE_FACTS = [
 
 function App() {
 
-  const [summary, SetSummary] = useState<string | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [photoURL, setPhotoURL] = useState<string | null>(null);
@@ -93,14 +93,14 @@ function App() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-start gap-10 px-5 py-5
+    <div className="w-full h-screen flex flex-col items-center justify-start gap-10 px-5
         bg-gradient-to-r from-indigo-900 via-black-500 to-red-400
         overflow-y-scroll">
         <video ref={videoRef} style={{ display: "none" }} />
 
         <canvas ref={canvasRef} style={{ display: "none" }} />
 
-        <h1 className="text-4xl font-bold text-white text-center">Detect strokes. Make split-decisions.</h1>
+        <h1 id="app-quote" className="mt-50 text-6xl italic text-white text-center"> 🧠 Detect strokes. Make split-decisions.</h1>
 
 
       <section className="bg-neutral-800/80 backdrop-blur p-4 rounded-lg shadow-lg
@@ -189,7 +189,8 @@ function App() {
         </div>
       </section>
 
-      <h1 className="text-2xl">Your photo summary:</h1>
+      <h1 className="text-2xl text-white
+      drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mt-12">Your photo summary:</h1>
 
       {summary ? (
           <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg mt-10">
@@ -204,17 +205,22 @@ function App() {
           </h1>
       }
 
-      <h1 className="text-2xl">Common signs of a <span className="font-medium italic underline">stroke</span>:</h1>
+      <h1 className="text-2xl text-white
+        drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mt-12">
+        Common signs of a <span className="font-medium italic underline">stroke</span>:
+      </h1>
 
-      <section>
-      {
-        STROKE_FACTS.map((fact, idx) => (
-          <div key={idx} className="flex items-start gap-3 mt-4">
-            <span className="text-2xl">{fact.icon}</span>
-            <p className="text-gray-200 text-sm md:text-base">{fact.text}</p>
+      <section className="mb-25">
+        {STROKE_FACTS.map((fact, idx) => (
+          <div key={idx} className="flex items-start gap-3 mt-4
+              p-2 bg-black/30 backdrop-blur-sm rounded-lg
+              shadow-md hover:shadow-lg transition-shadow duration-200">
+            <span className="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">{fact.icon}</span>
+            <p className="text-gray-200 text-sm md:text-base drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
+              {fact.text}
+            </p>
           </div>
-        ))
-      }
+        ))}
       </section>
     </div>
   )
