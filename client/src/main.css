@@ -1,1 +1,47 @@
 @import 'tailwindcss';
+
+
+html, body, #root {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #18181b;
+	color-scheme: dark;
+	overflow: hidden;
+	position: relative;
+}
+
+#root::before {
+	content: '';
+	position: fixed;
+	z-index: 0;
+	top: 0; left: 0; right: 0; bottom: 0;
+	pointer-events: none;
+	background: linear-gradient(120deg, #312e81 0%, #0ea5e9 50%, #f472b6 100%);
+	opacity: 0.18;
+	animation: bgMove 12s ease-in-out infinite alternate;
+}
+
+@keyframes bgMove {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 100% 50%;
+	}
+}
+
+body {
+	font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+	background: #18181b;
+}
+
+/* Fade-in animation for facts */
+.animate-fade-in {
+	opacity: 0;
+	animation: fadeIn 1s forwards;
+}
+@keyframes fadeIn {
+	to { opacity: 1; }
+}
