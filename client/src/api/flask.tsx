@@ -23,7 +23,7 @@ export async function fetchHello(): Promise<string> {
     }
 }
 
-export async function analyzeStrokeImage(formData: FormData): Promise<any> {
+export async function analyzeStrokeImage(formData: FormData) {
     try {
         console.log("Sending to:", `${API_BASE}/analyze-stroke`);
         const response = await fetch(`${API_BASE}/analyze-stroke`, {
