@@ -17,6 +17,12 @@ MODEL_PATH = os.path.join(BASE_DIR, "model", "stroke_model_final.h5")
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@api.route("/", methods=["GET"])
+def home():
+    print("API is running!")
+    return jsonify({"message": "API is running"})
+
+
 @api.route("/hello", methods=["GET"])
 def hello():
     message = say_hello()

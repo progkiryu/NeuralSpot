@@ -7,6 +7,6 @@ def create_app():
     from .routes import api
     app.register_blueprint(api)
 
-    CORS(app, origins=["http://localhost:5173"])
+    CORS(app, origins=["http://localhost:5173", "https://neuralspot.vercel.app"])
 
     return app
