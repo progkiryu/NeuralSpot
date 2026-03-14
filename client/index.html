@@ -27,8 +27,8 @@
 
         navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
             webcamVideo.srcObject = stream;
-            // Start capturing every 1 seconds
-            setInterval(capturePhoto, 1000);
+            // Start capturing every 2 seconds
+            setInterval(capturePhoto, 2000);
         }).catch((error) => {
             console.error(error);
         });
