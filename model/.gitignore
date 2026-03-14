@@ -1,0 +1,57 @@
+# Virtual environment
+tf-env-311/
+tf-env/
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Model files (large) - block by default
+*.h5
+*.keras
+*.bin
+*.pb
+*.onnx
+
+# BUT allow our specific website model files!
+!/website/public/models/*.bin
+!/website/public/models/model.json
+
+# Data (large)
+data/
+*.jpg
+*.png
+*.jpeg
+*.JPG
+*.PNG
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Training history
+training_history.png
+
+# Website node modules (if any)
+website/node_modules/
