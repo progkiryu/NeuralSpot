@@ -8,39 +8,30 @@
 
 <body>
 
-    <video id="webcamVideo" autoplay playsinline></video>
-    <canvas id="canvas" style="display:none;"></canvas>
-    <img id="photo" alt="Captured photo will appear here">
+    <video id="webcamVideo" autoplay style="width:320px; height:240px;"></video>
+    <canvas id="captureCanvas" width="320" height="240" style="display:none;"></canvas>
+    <img id="photoPreview" alt="Latest photo"
+        style="display:block; margin-top:10px; width:320px; height:240px; border:1px solid #ccc;" />
 
     <script>
         const webcamVideo = document.getElementById("webcamVideo");
-        const canvas = document.getElementById("canvas");
-        const photo = document.getElementById("photo");
+        const captureCanvas = document.getElementById("captureCanvas");
+        const photoPreview = document.getElementById("photoPreview");
+        const ctx = captureCanvas.getContext("2d");
 
-        async function startCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                webcamVideo.srcObject = stream;
-            } catch (error) {
-                console.error(error);
-                alert("Error accessing the camera: " + error.message);
-            }
+        function capturePhoto() {
+            ctx.drawImage(webcamVideo, 0, 0, captureCanvas.width, captureCanvas.height);
+            const dataUrl = captureCanvas.toDataURL("image/png");
+            photoPreview.src = dataUrl;
         }
 
-        function takePhoto() {
-            if (webcamVideo.videoWidth === 0 || webcamVideo.videoHeight === 0) return;
-            canvas.width = webcamVideo.videoWidth;
-            canvas.height = webcamVideo.videoHeight;
-            canvas.getContext('2d').drawImage(webcamVideo, 0, 0, canvas.width, canvas.height);
-            const imageDataUrl = canvas.toDataURL('image/jpeg');
-            photo.src = imageDataUrl;
-        }
-
-        // Take a photo every 3 seconds
-        setInterval(takePhoto, 1000);
-
-        // Start the camera when the page loads
-        window.addEventListener('load', startCamera);
+        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+            webcamVideo.srcObject = stream;
+            // Start capturing every 1 seconds
+            setInterval(capturePhoto, 1000);
+        }).catch((error) => {
+            console.error(error);
+        });
     </script>
 </body>
 
