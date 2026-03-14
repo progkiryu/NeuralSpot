@@ -13,9 +13,6 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 MODEL_PATH = os.path.join(BASE_DIR, "model", "stroke_model_final.h5")
 
-# Cache the loaded model so we don't reload on every request.
-_model = None
-
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -26,13 +23,16 @@ def hello():
 
 @api.route("/photo", methods=["POST"])
 def photo():
+    # if form data header is not provided, send 400
     if "file" not in request.files:
         return jsonify({"error": "No file part in request"}), 400
 
+    # if file name is blank, send 400
     file = request.files["file"]
     if not file or file.filename == "":
         return jsonify({"error": "No file selected"}), 400
 
+    # if file name is not proper, send 400
     if not allowed_file(file.filename):
         return jsonify({"error": "File type not allowed"}), 400
 
@@ -40,6 +40,7 @@ def photo():
     save_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(save_path)
 
+    # remove file after uploading
     if os.path.exists(save_path):
         os.remove(save_path)
 

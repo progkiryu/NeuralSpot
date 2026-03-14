@@ -74,11 +74,11 @@ function App() {
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhotoURL(null);
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-
+      // if new image is the same as the one that's uploaded, return
+      if (imageUrl === photoURL) return;
       const formData = new FormData();
       formData.append("file", file);
       
@@ -88,6 +88,7 @@ function App() {
       // sends photo
       await sendPhotoFile(formData);
     }
+    e.target.value = ""
   };
 
   const handleModeSelect = (mode: string) => {
@@ -101,7 +102,11 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(fetchHello());
+    // testing api connection
+    const hello = async () => {
+      console.log(await fetchHello());
+    }
+    hello();
   }, []);
 
   return (
