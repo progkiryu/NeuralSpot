@@ -1,8 +1,9 @@
-import { DBLink } from '../main';
+// Remove the import from main - we'll use environment directly
+const API_BASE = import.meta.env.VITE_DEV_ADDR || '';
 
 export async function fetchHello(): Promise<string> {
     try {
-        const response = await fetch(`${DBLink}/hello`, {
+        const response = await fetch(`${API_BASE}/hello`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -13,7 +14,7 @@ export async function fetchHello(): Promise<string> {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const result = response.json();
+        const result = await response.json();
         return result;
     }
     catch (err) {
@@ -22,10 +23,10 @@ export async function fetchHello(): Promise<string> {
     }
 }
 
-// api call for sending photo to flask
-export async function sendPhotoFile(formData: FormData): Promise<void> {
+export async function analyzeStrokeImage(formData: FormData): Promise<any> {
     try {
-        const response = await fetch(`${DBLink}/photo`, {
+        console.log("Sending to:", `${API_BASE}/analyze-stroke`);
+        const response = await fetch(`${API_BASE}/analyze-stroke`, {
             method: "POST",
             body: formData
         });
@@ -34,9 +35,12 @@ export async function sendPhotoFile(formData: FormData): Promise<void> {
             throw new Error(`HTTP error! status: ${response.status}`);
         }   
 
-        console.log("Success fetching POST /photo")
+        const result = await response.json();
+        console.log("✅ Stroke analysis result:", result);
+        return result;
     }
     catch (err) {
-        console.error("Error fetching POST /photo:", err);
+        console.error("❌ Error in stroke analysis:", err);
+        throw err;
     }
 }
