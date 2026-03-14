@@ -24,12 +24,8 @@ export async function fetchHello(): Promise<string> {
 
 export async function sendPhotoFile(formData: FormData): Promise<void> {
     try {
-        console.log(formData)
         const response = await fetch(`${DBLink}/photo`, {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: formData
         });
 

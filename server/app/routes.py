@@ -17,7 +17,8 @@ def hello():
     return {"message": message}
 
 @api.route("/photo", methods=["POST"])
-def upload_file():
-    file = request.files["image"]
-    message = "received!"
+def photo():
+    file = request.files["file"]
+    
+    message = "received"
     return {"message": message}
