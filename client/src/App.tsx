@@ -4,6 +4,18 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import LinkedCameraIcon from '@mui/icons-material/LinkedCamera';
 import WebcamCapture from './WebcamCapture';
 
+const STROKE_FACTS = [
+  { icon: "🧑‍⚕️", text: "Sudden numbness or weakness in the face, arm, or leg, especially on one side of the body." },
+  { icon: "💬", text: "Sudden confusion, trouble speaking, or understanding speech." },
+  { icon: "👁️", text: "Sudden trouble seeing in one or both eyes." },
+  { icon: "🦵", text: "Sudden trouble walking, dizziness, loss of balance or coordination." },
+  { icon: "💢", text: "Sudden severe headache with no known cause." },
+  { icon: "🙂", text: "Face drooping: Ask the person to smile. Does one side of the face droop?" },
+  { icon: "🫱", text: "Arm weakness: Ask the person to raise both arms. Does one arm drift downward?" },
+  { icon: "🗣️", text: "Speech difficulty: Ask the person to repeat a simple phrase. Is the speech slurred or strange?" },
+  { icon: "⏰", text: "Time to call emergency services if any symptoms are present." },
+  { icon: "⚡", text: "Acting quickly can save lives and reduce disability." }
+];
 
 function App() {
 
@@ -81,49 +93,54 @@ function App() {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center gap-10 px-5 py-2
-    bg-gradient-to-r from-violet-600 via-blue-500 to-cyan-400">
-      <video ref={videoRef} style={{ display: "none" }} />
+    <div className="w-full h-screen flex flex-col items-center justify-start gap-10 px-5 py-5
+        bg-gradient-to-r from-indigo-900 via-black-500 to-red-400
+        overflow-y-scroll">
+        <video ref={videoRef} style={{ display: "none" }} />
 
-      <canvas ref={canvasRef} style={{ display: "none" }} />
+        <canvas ref={canvasRef} style={{ display: "none" }} />
 
-      <h1 className="text-4xl font-bold text-white text-center">Detect strokes. Make split-decisions.</h1>
-      
-      {
-        (selected === 'add-photo' && photoURL) && (
-          <> 
-            <div className="w-[320px] h-[240px] overflow-hidden border-black rounded-sm border-2">
-              <img src={photoURL} className="w-full h-full object-cover" />
-            </div>
-            <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 rounded-full
-            cursor-pointer text-white font-bold hover:scale-105 transition"
-            onClick={handleRemovePhoto}>
-              Remove Photo
-            </button>
-          </>
+        <h1 className="text-4xl font-bold text-white text-center">Detect strokes. Make split-decisions.</h1>
+
+
+      <section className="bg-neutral-800/80 backdrop-blur p-4 rounded-lg shadow-lg
+      w-full max-w-4xl gap-10 flex flex-col items-center justify-center">
+        {
+          (selected === 'add-photo' && photoURL) && (
+            <> 
+              <div className="w-[320px] h-[240px] rounded-xl border-2 border-neutral-700 shadow-lg bg-black overflow-hidden">
+                <img src={photoURL} className="w-full h-full object-cover" />
+              </div>
+              <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 rounded-full
+              cursor-pointer text-white font-bold hover:scale-105 transition"
+              onClick={handleRemovePhoto}>
+                Remove Photo
+              </button>
+            </>
+          )
+        }
+        { selected === 'linked-camera' && (
+          <WebcamCapture />
         )
-      }
-      { selected === 'linked-camera' && (
-        <WebcamCapture />
-       )
-      }
-      {
-        selected === 'photo-library' && photoURL && (
-          <>
-            <div className="w-[320px] h-[240px] overflow-hidden border-black rounded-sm border-2">
-              <img className="w-full h-full object-cover" alt="Selected"
-              src={photoURL} />
-            </div>
-            <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 rounded-full
-            cursor-pointer text-white font-bold hover:scale-105 transition"
-            onClick={handleRemovePhoto}>
-              Remove Photo
-            </button>
-          </>
-        )
-      }
+        }
+        {
+          selected === 'photo-library' && photoURL && (
+            <>
+              <div className="w-[320px] h-[240px] rounded-xl border-2 border-neutral-700 shadow-lg bg-black overflow-hidden">
+                <img className="w-full h-full object-cover" alt="Selected"
+                src={photoURL} />
+              </div>
+              <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-orange-500 rounded-full
+              cursor-pointer text-white font-bold hover:scale-105 transition"
+              onClick={handleRemovePhoto}>
+                Remove Photo
+              </button>
+            </>
+          )
+        }
 
-      <section className="w-full max-w-4xl gap-10 flex flex-col items-center justify-center">
+        { selected !== null && <hr className="w-full" /> }
+
         <div className="w-full flex items-center justify-center gap-5">
           <button title="Take a photo"
           className="rounded-full p-2 flex items-center justify-center h-[80px] w-[80px] bg-white cursor-pointer
@@ -170,10 +187,12 @@ function App() {
             </span>
           </button>
         </div>
+      </section>
 
-        {summary ? (
+      <h1 className="text-2xl">Your photo summary:</h1>
+
+      {summary ? (
           <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg mt-10">
-            <h1>Summary:</h1>
             <p className="text-lg font-semibold text-gray-800">{summary}</p>
           </div>
         ) : <h1 className="text-xl font-semibold italic underline 
@@ -182,7 +201,20 @@ function App() {
           drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)] 
           tracking-wide">
             Add a photo to see results!
-          </h1>}
+          </h1>
+      }
+
+      <h1 className="text-2xl">Common signs of a <span className="font-medium italic underline">stroke</span>:</h1>
+
+      <section>
+      {
+        STROKE_FACTS.map((fact, idx) => (
+          <div key={idx} className="flex items-start gap-3 mt-4">
+            <span className="text-2xl">{fact.icon}</span>
+            <p className="text-gray-200 text-sm md:text-base">{fact.text}</p>
+          </div>
+        ))
+      }
       </section>
     </div>
   )
