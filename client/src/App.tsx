@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import LinkedCameraIcon from '@mui/icons-material/LinkedCamera';
+import WebcamCapture from './WebcamCapture';
 
 
 function App() {
@@ -9,11 +10,26 @@ function App() {
   const [summary, SetSummary] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const openFileDialog = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log(file);
+    }
+  };
+
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center gap-10 px-5
+    <div className="w-full min-h-screen flex flex-col items-center justify-center gap-10 px-5 py-2
     bg-gradient-to-r from-violet-600 via-blue-500 to-cyan-400">
-      <h1 className="text-4xl font-bold text-white">Detect stokes. Make split-decisions.</h1>
+      <h1 className="text-4xl font-bold text-white text-center">Detect stokes. Make split-decisions.</h1>
       
+      <WebcamCapture />
+
       <section className="w-full max-w-4xl gap-10 flex flex-col items-center justify-center">
         <div className="w-full flex items-center justify-center gap-5">
           <button title="Take a photo"
@@ -31,12 +47,20 @@ function App() {
           className="rounded-full p-2 flex items-center justify-center h-[80px] w-[80px] bg-white cursor-pointer
           shadow-lg shadow-black/50
           hover:bg-black duration-200 transition"
+          onClick={() => openFileDialog()}
           onMouseEnter={() => setHovered('photo-library')} onMouseLeave={() => setHovered(null)}>
             <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
               <PhotoLibraryIcon
                fontSize="large"
                className={`duration-200 ${hovered === 'photo-library' ? 'text-pink-500 scale-115' : 'text-black'} !transition`} />
             </span>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              accept="image/*"
+            />
           </button>
           <button title="Automatic Screenshots" 
           className="rounded-full p-2 flex items-center justify-center h-[80px] w-[80px] bg-white cursor-pointer
@@ -64,9 +88,7 @@ function App() {
           tracking-wide">
             Add a photo to see results!
           </h1>}
-
       </section>
-
     </div>
   )
 }
