@@ -1,0 +1,50 @@
+cat > .gitignore << 'EOF'
+# Virtual environment
+tf-env-311/
+tf-env/
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Model files (large)
+*.h5
+*.keras
+*.bin
+*.pb
+*.onnx
+
+# Data (large)
+data/
+*.jpg
+*.png
+*.jpeg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Training history
+training_history.png
+EOF
