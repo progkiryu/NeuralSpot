@@ -329,6 +329,8 @@ function App() {
           </div>
         ))}
       </section>
+
+      <p className="text-white p-4 text-center"><span className="font-bold italic underline">Disclaimer:</span> Our solution is not a certified medical software, and should NEVER be used in its current state as a replacement for approved stroke detection systems.</p>
     </div>
   )
 }
