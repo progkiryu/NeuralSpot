@@ -183,12 +183,18 @@ function App() {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-start gap-10 px-5
-        bg-gradient-to-r from-indigo-900 via-black-500 to-red-400
+        bg-[#545454]
         overflow-y-scroll">
         <video ref={videoRef} style={{ display: "none" }} />
         <canvas ref={canvasRef} style={{ display: "none" }} />
 
-        <h1 id="app-quote" className="mt-50 text-6xl italic text-white text-center"> 🧠 Detect strokes. Make split-decisions.</h1>
+        <div className="flex items-center justify-center mt-50">
+          <div className="flex flex-col gap-2">
+            <h1 id="app-quote" className="text-6xl text-white text-center">neuralSpot.</h1>
+            <p id="app-quote" className="text-xl text-white">seconds save lives.</p>
+          </div>
+          <img src="/logo.png" className="w-[200px] h-[200px]" />
+        </div>
 
       <section className="bg-neutral-800/80 backdrop-blur p-4 rounded-lg shadow-lg
       w-full max-w-4xl gap-10 flex flex-col items-center justify-center">
@@ -247,7 +253,7 @@ function App() {
             <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
               <AddPhotoAlternateIcon
                 fontSize="large" 
-                className={`duration-200 ${hovered === 'add-photo' ? 'text-pink-500 scale-115' : 'text-black'} !transition`} />
+                className={`duration-200 ${hovered === 'add-photo' ? 'text-green-500 scale-115' : 'text-black'} !transition`} />
             </span>
           </button>
           
@@ -261,7 +267,7 @@ function App() {
             <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
               <PhotoLibraryIcon
                 fontSize="large"
-                className={`duration-200 ${hovered === 'photo-library' ? 'text-pink-500 scale-115' : 'text-black'} !transition`} />
+                className={`duration-200 ${hovered === 'photo-library' ? 'text-green-500 scale-115' : 'text-black'} !transition`} />
             </span>
             <input
               type="file"
@@ -282,7 +288,7 @@ function App() {
             <span className="flex items-center justify-center h-[60px] w-[60px] border-2 border-gray-300 rounded-full">
               <LinkedCameraIcon
                 fontSize="large"
-                className={`duration-200 ${hovered === 'linked-camera' ? 'text-pink-500 scale-115' : 'text-black'} !transition`}
+                className={`duration-200 ${hovered === 'linked-camera' ? 'text-green-500 scale-115' : 'text-black'} !transition`}
               />
             </span>
           </button>
@@ -299,7 +305,7 @@ function App() {
         </div>
       ) : (
         <h1 className="text-xl font-semibold italic underline 
-          bg-gradient-to-r from-orange-500 to-pink-500 
+          bg-gradient-to-r from-green-300 to-green-600 
           bg-clip-text text-transparent 
           drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)] 
           tracking-wide">
