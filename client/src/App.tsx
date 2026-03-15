@@ -14,8 +14,6 @@ const STROKE_FACTS = [
   { icon: "🙂", text: "Face drooping: Ask the person to smile. Does one side of the face droop?" },
   { icon: "🫱", text: "Arm weakness: Ask the person to raise both arms. Does one arm drift downward?" },
   { icon: "🗣️", text: "Speech difficulty: Ask the person to repeat a simple phrase. Is the speech slurred or strange?" },
-  { icon: "⏰", text: "Time to call emergency services if any symptoms are present." },
-  { icon: "⚡", text: "Acting quickly can save lives and reduce disability." }
 ];
 
 interface StrokeResult {
