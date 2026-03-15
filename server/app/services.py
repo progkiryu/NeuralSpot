@@ -184,4 +184,67 @@ def analyze_stroke(image_path):
             'success': False,
             'error': str(e)
         }
-    
+
+from __future__ import print_function
+import clicksend_client
+from clicksend_client.rest import ApiException
+
+# 1. Configuration
+configuration = clicksend_client.Configuration()
+configuration.username = 'edwardsouza143@gmail.com'
+configuration.password = '2443CFA6-2C78-9866-CC36-5E7CA823587F'
+
+# 2. Create an instance of the SMS API
+api_instance = clicksend_client.SMSApi(clicksend_client.ApiClient(configuration))
+
+def send_emergency_sms(user_name: str, phone_numbers: list):
+    """
+    Send emergency SMS to contacts when stroke is detected
+    Args:
+        user_name: Name of the person suspected of having a stroke
+        phone_numbers: List of phone numbers to send to (up to 10)
+    Returns: dict with success status and message
+    """
+    try:
+        # Limit to 10 numbers as requested
+        phone_numbers = phone_numbers[:10]
+        
+        # Create the message
+        message_body = f"{user_name} is suspected to be having a stroke and has chosen you as one of their emergency contacts. Please contact relevant emergency services and aid them in any way."
+        
+        # Create SMS messages
+        messages = []
+        for num in phone_numbers:
+            # Ensure number starts with +
+            if not num.startswith('+'):
+                num = '+' + num
+            
+            msg = clicksend_client.SmsMessage(
+                source="NeuralSpot",
+                body=message_body,
+                to=num
+            )
+            messages.append(msg)
+        
+        # Wrap in collection
+        sms_messages = clicksend_client.SmsMessageCollection(messages=messages)
+        
+        # Send the batch
+        api_response = api_instance.sms_send_post(sms_messages)
+        
+        return {
+            'success': True,
+            'message': f'Emergency SMS sent to {len(phone_numbers)} contacts',
+            'response': str(api_response)
+        }
+        
+    except ApiException as e:
+        return {
+            'success': False,
+            'error': f'ClickSend API error: {str(e)}'
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'error': f'Unexpected error: {str(e)}'
+        }

@@ -5,3 +5,4 @@ torchvision
 numpy
 pyngrok
 python-dotenv
+clicksend-client

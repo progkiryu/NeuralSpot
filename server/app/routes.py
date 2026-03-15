@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
-from .services import say_hello, analyze_stroke  # ADDED analyze_stroke here
+from .services import say_hello, analyze_stroke, send_emergency_sms  # ADDED send_emergency_sms here
 import os
 
 api = Blueprint("api", __name__)
@@ -93,4 +93,43 @@ def analyze_stroke_route():
         # Always clean up - remove temp file
         if os.path.exists(save_path):
             os.remove(save_path)
+
+# ============================================
+# EMERGENCY SMS ENDPOINT
+# ============================================
+@api.route("/send-emergency-sms", methods=["POST"])
+def send_emergency_sms_route():
+    """Send emergency SMS to contacts when stroke is detected"""
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        if not data or 'user_name' not in data or 'phone_numbers' not in data:
+            return jsonify({"error": "Missing required fields: user_name and phone_numbers"}), 400
+        
+        user_name = data['user_name']
+        phone_numbers = data['phone_numbers']
+        
+        # Validate phone_numbers is a list
+        if not isinstance(phone_numbers, list):
+            return jsonify({"error": "phone_numbers must be a list"}), 400
+        
+        # Validate we have at least one number
+        if len(phone_numbers) == 0:
+            return jsonify({"error": "At least one phone number is required"}), 400
+        
+        # Validate user_name is not empty
+        if not user_name.strip():
+            return jsonify({"error": "user_name cannot be empty"}), 400
+        
+        # Send the SMS
+        result = send_emergency_sms(user_name.strip(), phone_numbers)
+        
+        if result['success']:
+            return jsonify(result)
+        else:
+            return jsonify({"error": result['error']}), 500
+            
+    except Exception as e:
+        return jsonify({"error": f"Unexpected error: {str(e)}"}), 500
             
