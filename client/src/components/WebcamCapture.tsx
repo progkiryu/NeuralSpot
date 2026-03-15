@@ -9,7 +9,13 @@ interface StrokeResult {
   confidence: number;
 }
 
-export default function WebcamCapture() {
+interface Props {
+  playSound: () => void;
+  stopSound: () => void;
+  playCameraSound: () => void;
+}
+
+export default function WebcamCapture({ playSound, stopSound, playCameraSound }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -49,6 +55,7 @@ export default function WebcamCapture() {
   }, []);
 
   const captureAndAnalyze = async () => {
+    playCameraSound();
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
@@ -83,6 +90,9 @@ export default function WebcamCapture() {
       formData.append('file', file);
       
       const analysisResult = await analyzeStrokeImage(formData);
+      console.log(analysisResult.detected);
+      if (analysisResult.detected) playSound();
+      else { stopSound(); }
       setResult(analysisResult);
       
     } catch (error) {

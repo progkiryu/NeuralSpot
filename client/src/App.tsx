@@ -37,7 +37,26 @@ function App() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  const audioRef = useRef(new Audio("/alarm.mp3"));
+  const cameraAudioRef = useRef(new Audio("/camera.mp3"));
+
+  const playSound = () => {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play();
+  }
+
+  const stopSound = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0; // rewind
+  };
+
+  const playCameraSound = () => {
+    cameraAudioRef.current.currentTime = 0;
+    cameraAudioRef.current.play();
+  }
+
   const startCameraAndCapture = async () => {
+    playCameraSound();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
@@ -81,6 +100,7 @@ function App() {
                 // Update summary based on result
                 if (result.detected) {
                   setSummary(`⚠️ Stroke signs detected with ${result.confidence.toFixed(1)}% confidence. Please seek medical attention immediately.`);
+                  playSound();
                 } else {
                   setSummary(`✅ No stroke signs detected (${result.confidence.toFixed(1)}% confidence). If symptoms persist, consult a doctor.`);
                 }
@@ -127,6 +147,7 @@ function App() {
         // Update summary based on result
         if (result.detected) {
           setSummary(`⚠️ Stroke signs detected with ${result.confidence.toFixed(1)}% confidence. Please seek medical attention immediately.`);
+          playSound();
         } else {
           setSummary(`✅ No stroke signs detected (${result.confidence.toFixed(1)}% confidence). If symptoms persist, consult a doctor.`);
         }
@@ -141,6 +162,7 @@ function App() {
   };
 
   const handleModeSelect = (mode: string) => {
+    stopSound();
     if (mode === selected) return setSelected(null);
     setSelected(mode);
   }
@@ -209,7 +231,7 @@ function App() {
         )}
         
         {selected === 'linked-camera' && (
-          <WebcamCapture />
+          <WebcamCapture playSound={playSound} stopSound={stopSound} playCameraSound={playCameraSound} />
         )}
 
         {selected !== null && <hr className="w-full text-white" />}
