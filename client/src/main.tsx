@@ -8,6 +8,9 @@ let apiLink: string = import.meta.env.VITE_API_ADDR;
 if (isDev) apiLink = "http://localhost:5000";
 export const DBLink: string = apiLink;
 
+console.log(apiLink);
+console.log(DBLink);
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
