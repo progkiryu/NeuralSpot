@@ -1,9 +1,9 @@
 // Remove the import from main - we'll use environment directly
-const API_BASE = import.meta.env.VITE_DEV_ADDR || '';
+import { DBLink } from "../main";
 
 export async function fetchHello(): Promise<string> {
     try {
-        const response = await fetch(`${API_BASE}/hello`, {
+        const response = await fetch(`${DBLink}/hello`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,8 +25,8 @@ export async function fetchHello(): Promise<string> {
 
 export async function analyzeStrokeImage(formData: FormData): Promise<any> {
     try {
-        console.log("Sending to:", `${API_BASE}/analyze-stroke`);
-        const response = await fetch(`${API_BASE}/analyze-stroke`, {
+        console.log("Sending to:", `${DBLink}/analyze-stroke`);
+        const response = await fetch(`${DBLink}/analyze-stroke`, {
             method: "POST",
             body: formData
         });
