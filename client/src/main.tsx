@@ -3,7 +3,10 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './main.css'
 
-export const DBLink = import.meta.env.VITE_DEV_ADDR
+export const isDev: boolean = import.meta.env.MODE === "development";
+let apiLink: string = import.meta.env.VITE_API_ADDR;
+if (isDev) apiLink = "http://localhost:5000";
+export const DBLink: string = apiLink;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
