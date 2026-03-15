@@ -64,6 +64,33 @@ function App() {
             const imageData = canvas.toDataURL("image/png");
             setSelected('add-photo');
             setPhotoURL(imageData);
+            setStrokeResult(null);
+
+            canvas.toBlob(async (blob) => {
+              if (!blob) return;
+              const file = new File([blob], "capture.png", { type: "image/png" });
+
+              const formData = new FormData();
+              formData.append("file", file);
+
+              try {
+                // Send to stroke detection API
+                const result = await analyzeStrokeImage(formData);
+                setStrokeResult(result);
+                
+                // Update summary based on result
+                if (result.detected) {
+                  setSummary(`⚠️ Stroke signs detected with ${result.confidence.toFixed(1)}% confidence. Please seek medical attention immediately.`);
+                } else {
+                  setSummary(`✅ No stroke signs detected (${result.confidence.toFixed(1)}% confidence). If symptoms persist, consult a doctor.`);
+                }
+              } catch (error) {
+                console.error("Error analyzing image:", error);
+                setSummary("❌ Error analyzing image. Please try again.");
+              } finally {
+                setLoading(false);
+              }
+            });
 
             stream.getTracks().forEach(track => track.stop());
           }, 100);
