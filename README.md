@@ -13,17 +13,16 @@ NeuralSpot is a website application that allows users to upload photos in 3 diff
 - REST API
 - Vercel (deployment)
 - AI Model:
-    - Tensorflow
-    - Matplotlib
+    - Pytorch
     - Numpy
 
 
 ## Development:
-To run the application in development mode, first clone the repo, then enter the 'server' directory to install the necessary Python packages and start running 'run.py':
+To run the application in development mode, first clone the repo, then enter the 'server' directory to install the necessary Python packages and start running 'index.py':
 ```
 cd NeuralSpot/server
-pip install flask flask-cors numpy tensorflow matplotlib
-python run.py
+pip install flask flask-cors numpy torch torchvision numpy pyngrok python-dotenv
+python index.py
 ```
 Once the web server is active, change directories to 'client' to install the necessary NPM packages and run Vite's development server:
 ```
