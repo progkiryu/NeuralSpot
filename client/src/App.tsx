@@ -186,10 +186,10 @@ function App() {
         <video ref={videoRef} style={{ display: "none" }} />
         <canvas ref={canvasRef} style={{ display: "none" }} />
 
-        <div className="flex items-center justify-center mt-50">
+        <div className="flex sm:flex-row flex-col items-center justify-center mt-50">
           <div className="flex flex-col gap-2">
-            <h1 id="app-quote" className="text-6xl text-white text-center">neuralSpot.</h1>
-            <p id="app-quote" className="text-xl text-white">seconds save lives.</p>
+            <h1 id="app-quote" className="text-5xl sm:text-6xl text-white text-center">neuralSpot.</h1>
+            <p id="app-quote" className="text-lg sm:text-xl text-white">seconds save lives.</p>
           </div>
           <img src="/logo.png" className="w-[200px] h-[200px]" />
         </div>
